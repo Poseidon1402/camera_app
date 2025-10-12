@@ -11,6 +11,10 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
+  camera: ^0.11.0+2
+  onnxruntime: ^1.4.1
+  image: ^4.1.7
+  ffi: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -21,4 +25,4 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/face_detection.tflite
+    - assets/face_detection.onnx
