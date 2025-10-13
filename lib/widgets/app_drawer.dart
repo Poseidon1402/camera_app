@@ -76,6 +76,14 @@ class AppDrawer extends StatelessWidget {
                   Navigator.of(context).pushReplacementNamed('/human-detection');
                 },
               ),
+              _DrawerItem(
+                icon: Icons.face_retouching_natural,
+                title: 'Face Recognition',
+                subtitle: 'Identify faces using EdgeFace',
+                onTap: () {
+                  Navigator.of(context).pushReplacementNamed('/face-recognition');
+                },
+              ),
             ],
           ),
           const Divider(),

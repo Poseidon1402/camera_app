@@ -52,6 +52,14 @@ class HomeScreen extends StatelessWidget {
                       Navigator.pushNamed(context, '/human-detection');
                     },
                   ),
+                  _FeatureCard(
+                    icon: Icons.face_retouching_natural,
+                    title: 'Face\nRecognition',
+                    color: Colors.purple,
+                    onTap: () {
+                      Navigator.pushNamed(context, '/face-recognition');
+                    },
+                  ),
                 ],
               ),
             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'screens/face_detection_screen.dart';
 import 'screens/human_detection_screen.dart';
+import 'screens/face_recognition_screen.dart';
 
 void main() {
   runApp(const DetectionApp());
@@ -34,6 +35,7 @@ class DetectionApp extends StatelessWidget {
         '/': (context) => const HomeScreen(),
         '/face-detection': (context) => const FaceDetectionScreen(),
         '/human-detection': (context) => const HumanDetectionScreen(),
+        '/face-recognition': (context) => const FaceRecognitionScreen(),
       },
     );
   }
