@@ -25,4 +25,4 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/face_detection_yunet_2023mar.onnx
+    - assets/
