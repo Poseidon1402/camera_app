@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'screens/home_screen.dart';
 import 'screens/face_detection_screen.dart';
+import 'screens/human_detection_screen.dart';
 
 void main() {
-  runApp(const FaceRecognitionApp());
+  runApp(const DetectionApp());
 }
 
-class FaceRecognitionApp extends StatelessWidget {
-  const FaceRecognitionApp({super.key});
+class DetectionApp extends StatelessWidget {
+  const DetectionApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Face Detection',
+      title: 'Detection App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -27,7 +29,12 @@ class FaceRecognitionApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const FaceDetectionScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomeScreen(),
+        '/face-detection': (context) => const FaceDetectionScreen(),
+        '/human-detection': (context) => const HumanDetectionScreen(),
+      },
     );
   }
 }

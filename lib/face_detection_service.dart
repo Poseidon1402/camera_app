@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:opencv_dart/opencv_dart.dart' as cv;
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
+import 'models/detection_result.dart';
 
 class FaceDetectionService {
   cv.FaceDetectorYN? _detector;
@@ -187,11 +188,16 @@ class FaceDetectionService {
   }
 }
 
-class FaceDetectionResult {
+class FaceDetectionResult implements DetectionResult {
+  @override
   final int x;
+  @override
   final int y;
+  @override
   final int width;
+  @override
   final int height;
+  @override
   final double confidence;
 
   FaceDetectionResult({

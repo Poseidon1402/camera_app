@@ -10,11 +10,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:face_recognition/main.dart';
 
 void main() {
-  testWidgets('Face recognition app smoke test', (WidgetTester tester) async {
+  testWidgets('Detection app smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const FaceRecognitionApp());
+    await tester.pumpWidget(const DetectionApp());
 
     // Verify that the app title is present.
-    expect(find.text('Face Detection'), findsOneWidget);
+    expect(find.text('Detection App'), findsOneWidget);
   });
 }
