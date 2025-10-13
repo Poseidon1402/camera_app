@@ -65,6 +65,16 @@ class FaceDetectionService {
           final y = faces.at<double>(i, 1).toInt();
           final w = faces.at<double>(i, 2).toInt();
           final h = faces.at<double>(i, 3).toInt();
+          
+          // Extract 5 facial landmarks
+          final landmarks = <cv.Point2f>[
+            cv.Point2f(faces.at<double>(i, 4), faces.at<double>(i, 5)),   // right eye
+            cv.Point2f(faces.at<double>(i, 6), faces.at<double>(i, 7)),   // left eye
+            cv.Point2f(faces.at<double>(i, 8), faces.at<double>(i, 9)),   // nose tip
+            cv.Point2f(faces.at<double>(i, 10), faces.at<double>(i, 11)), // right mouth corner
+            cv.Point2f(faces.at<double>(i, 12), faces.at<double>(i, 13)), // left mouth corner
+          ];
+          
           final confidence = faces.at<double>(i, 14); // Score is at index 14
 
           results.add(FaceDetectionResult(
@@ -73,6 +83,7 @@ class FaceDetectionService {
             width: w,
             height: h,
             confidence: confidence,
+            landmarks: landmarks,
           ));
         }
       }
@@ -199,6 +210,10 @@ class FaceDetectionResult implements DetectionResult {
   final int height;
   @override
   final double confidence;
+  
+  /// Face landmarks: right eye, left eye, nose tip, right mouth corner, left mouth corner
+  /// Each landmark is a Point2f with x and y coordinates
+  final List<cv.Point2f> landmarks;
 
   FaceDetectionResult({
     required this.x,
@@ -206,5 +221,6 @@ class FaceDetectionResult implements DetectionResult {
     required this.width,
     required this.height,
     required this.confidence,
+    this.landmarks = const [],
   });
 }

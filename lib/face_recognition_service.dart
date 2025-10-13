@@ -64,59 +64,155 @@ class FaceRecognitionService {
     }
 
     try {
-      // Detect face first
+      // Read image first
+      final cvImage = cv.imread(imagePath);
+      
+      // Detect face with landmarks
       final faces = await _detectionService.detectFaces(imagePath);
       
       if (faces.isEmpty) {
         debugPrint('No face detected in image');
+        cvImage.dispose();
         return null;
       }
 
       // Use the first detected face (highest confidence)
       final face = faces.first;
       
-      // Read and process image
-      final imageBytes = await File(imagePath).readAsBytes();
-      final image = img.decodeImage(imageBytes);
+      // Get face landmarks (eyes, nose, mouth corners)
+      final landmarks = face.landmarks;
       
-      if (image == null) {
-        debugPrint('Failed to decode image');
+      if (landmarks.isEmpty) {
+        debugPrint('No landmarks detected, using crop without alignment');
+        // Fall back to simple crop
+        final alignedFace = _cropFaceWithoutAlignment(cvImage, face);
+        cvImage.dispose();
+        
+        final inputTensor = _preprocessImage(alignedFace);
+        final embedding = await _runInference(inputTensor);
+        
+        return embedding;
+      }
+
+      // Align face using landmarks (eyes, nose, mouth)
+      final alignedFace = _alignFace(cvImage, landmarks);
+      cvImage.dispose();
+      
+      if (alignedFace == null) {
+        debugPrint('Failed to align face');
         return null;
       }
 
-      // Crop face region with padding
-      final padding = 10;
-      final x = max(0, face.x - padding);
-      final y = max(0, face.y - padding);
-      final width = min(image.width - x, face.width + 2 * padding);
-      final height = min(image.height - y, face.height + 2 * padding);
-
-      final faceCrop = img.copyCrop(image, x: x, y: y, width: width, height: height);
-
-      // Resize to model input size (typically 112x112 for face recognition)
-      final resized = img.copyResize(faceCrop, width: 112, height: 112);
-
       // Normalize and convert to tensor format
-      final inputTensor = _preprocessImage(resized);
+      final inputTensor = _preprocessImage(alignedFace);
 
       // Run inference
-      final inputs = {'input': inputTensor};
-      final runOptions = OrtRunOptions();
-      final outputs = _session!.run(runOptions, inputs);
-
-      // Extract embedding from output
-      final embedding = _extractEmbedding(outputs);
-
-      runOptions.release();
-      for (final value in outputs) {
-        value?.release();
-      }
+      final embedding = await _runInference(inputTensor);
 
       debugPrint('Extracted embedding with ${embedding.length} features');
       return embedding;
     } catch (e) {
       debugPrint('Error extracting face embedding: $e');
       rethrow;
+    }
+  }
+
+  /// Run inference on preprocessed image
+  Future<List<double>> _runInference(OrtValueTensor inputTensor) async {
+    final inputs = {'input': inputTensor};
+    final runOptions = OrtRunOptions();
+    final outputs = _session!.run(runOptions, inputs);
+
+    // Extract embedding from output
+    final embedding = _extractEmbedding(outputs);
+
+    runOptions.release();
+    for (final value in outputs) {
+      value?.release();
+    }
+    inputTensor.release();
+
+    return embedding;
+  }
+
+  /// Crop face without alignment (fallback method)
+  img.Image _cropFaceWithoutAlignment(cv.Mat cvImage, dynamic face) {
+    // Convert cv.Mat to img.Image
+    final (_, bytes) = cv.imencode('.jpg', cvImage);
+    final image = img.decodeImage(bytes)!;
+
+    // Crop face region with padding
+    final padding = 10;
+    final x = max(0, face.x - padding);
+    final y = max(0, face.y - padding);
+    final width = min(image.width - x, face.width + 2 * padding);
+    final height = min(image.height - y, face.height + 2 * padding);
+
+    final faceCrop = img.copyCrop(image, x: x, y: y, width: width, height: height);
+
+    // Resize to model input size (112x112 for face recognition)
+    return img.copyResize(faceCrop, width: 112, height: 112);
+  }
+
+  /// Align face using detected landmarks
+  img.Image? _alignFace(cv.Mat cvImage, List<cv.Point2f> landmarks) {
+    try {
+      // Standard face template for 112x112 aligned face
+      // These are the ideal positions for a frontal face
+      // YuNet provides: right eye, left eye, nose, right mouth corner, left mouth corner
+      if (landmarks.length < 5) {
+        debugPrint('Insufficient landmarks for alignment: ${landmarks.length}');
+        return null;
+      }
+
+      // Target landmark positions for 112x112 face (standard alignment)
+      // Order: right_eye, left_eye, nose_tip, right_mouth_corner, left_mouth_corner
+      final dstPoints = [
+        cv.Point2f(38.2946, 51.6963),  // right eye
+        cv.Point2f(73.5318, 51.5014),  // left eye
+        cv.Point2f(56.0252, 71.7366),  // nose tip
+        cv.Point2f(41.5493, 92.3655),  // right mouth corner
+        cv.Point2f(70.7299, 92.2041),  // left mouth corner
+      ];
+
+      // Create VecPoint2f from landmarks
+      final srcVec = cv.VecPoint2f.fromList(landmarks);
+      final dstVec = cv.VecPoint2f.fromList(dstPoints);
+
+      // Estimate similarity transform (rotation, scale, translation)
+      final (transformMatrix, _) = cv.estimateAffinePartial2D(srcVec, dstVec);
+      
+      if (transformMatrix.isEmpty) {
+        debugPrint('Failed to estimate transform matrix');
+        srcVec.dispose();
+        dstVec.dispose();
+        return null;
+      }
+
+      // Apply transformation to align face
+      final alignedMat = cv.warpAffine(
+        cvImage,
+        transformMatrix,
+        (112, 112),
+        flags: cv.INTER_LINEAR,
+        borderMode: cv.BORDER_CONSTANT,
+        borderValue: cv.Scalar(0, 0, 0, 0),
+      );
+
+      // Convert to img.Image
+      final (_, bytes) = cv.imencode('.jpg', alignedMat);
+      final alignedImage = img.decodeImage(bytes);
+
+      // Cleanup
+      srcVec.dispose();
+      dstVec.dispose();
+      transformMatrix.dispose();
+      alignedMat.dispose();
+
+      return alignedImage;
+    } catch (e) {
+      debugPrint('Error aligning face: $e');
+      return null;
     }
   }
 
@@ -248,7 +344,7 @@ class FaceRecognitionService {
       }
 
       // Threshold for recognition (adjust based on your model)
-      const double recognitionThreshold = 0.5;
+      const double recognitionThreshold = 0.4;
       
       if (bestSimilarity >= recognitionThreshold) {
         debugPrint('Face recognized: $bestMatch with similarity: $bestSimilarity');
