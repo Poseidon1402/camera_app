@@ -135,7 +135,7 @@ flutter run -d <device_id>
 flutter build apk --release
 ```
 
-## 📖 Usage Guide
+## Usage Guide
 
 ### Home Screen
 The app opens to a dashboard with three feature cards:
@@ -183,7 +183,7 @@ The app opens to a dashboard with three feature cards:
 - Delete faces by tapping the delete icon
 - Database persists between app sessions
 
-## 🧠 Model Information
+## Model Information
 
 ### YuNet Face Detection
 - **Version**: 2023 March
@@ -212,7 +212,7 @@ The app opens to a dashboard with three feature cards:
   - Normalization: `(pixel - 127.5) / 127.5`
 - **Matching**: Cosine similarity between embeddings
 
-## ⚙️ Configuration
+## Configuration
 
 ### Face Detection Parameters
 Edit `lib/services/face_detection_service.dart`:
@@ -279,7 +279,7 @@ Image → YuNet Detection → Landmark Extraction → Face Alignment
 - **Memory Management**: Proper resource disposal
 - **Null Safety**: Full null-safety support
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Initialization Errors
 **Problem**: "Failed to initialize face detector/recognizer"
@@ -328,7 +328,7 @@ Image → YuNet Detection → Landmark Extraction → Face Alignment
   - Check device specifications
   - Close background apps
 
-## 📱 Platform Requirements
+## Platform Requirements
 
 ### Android
 - **Minimum SDK**: 21 (Android 5.0 Lollipop)
@@ -346,7 +346,7 @@ Image → YuNet Detection → Landmark Extraction → Face Alignment
   - Photo Library (`NSPhotoLibraryUsageDescription`)
 - **Architectures**: arm64
 
-## 🚦 Performance Benchmarks
+## Performance Benchmarks
 
 ### Processing Times (Release Mode, Mid-Range Device)
 - **Face Detection**: ~50-150ms per image
@@ -359,7 +359,7 @@ Image → YuNet Detection → Landmark Extraction → Face Alignment
 - **Human Detection**: ~80-150 MB
 - **Face Recognition**: ~150-250 MB (includes ONNX Runtime)
 
-## 🔒 Privacy & Security
+## Privacy & Security
 
 - **Local Processing**: All detection and recognition happens on-device
 - **No Cloud**: No data sent to external servers
@@ -367,7 +367,7 @@ Image → YuNet Detection → Landmark Extraction → Face Alignment
 - **User Control**: Users can delete enrolled faces anytime
 - **No Biometric Data**: Stores mathematical embeddings, not raw images
 
-## 🎓 Learning Resources
+## Learning Resources
 
 ### Understanding the Code
 - **Base Detection Pattern**: See `base_detection_screen.dart` for reusable screen logic
@@ -381,7 +381,7 @@ Image → YuNet Detection → Landmark Extraction → Face Alignment
 3. **Cosine Similarity**: How face matching works
 4. **Non-Maximum Suppression**: Filtering overlapping detections
 
-## 📄 License
+## License
 
 This project is for educational and demonstration purposes.
 
@@ -390,7 +390,7 @@ This project is for educational and demonstration purposes.
 - MobileNetSSD: Apache 2.0
 - EdgeFace: Check model provider's license
 
-## 🙏 Credits
+## Credits
 
 - **OpenCV Team**: YuNet face detection model
 - **opencv_dart Contributors**: OpenCV bindings for Dart
@@ -399,7 +399,7 @@ This project is for educational and demonstration purposes.
 - **Google**: Flutter framework and MobileNetSSD
 - **Flutter Community**: Various packages used
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Areas for improvement:
 - Add more detection models
@@ -410,7 +410,7 @@ Contributions are welcome! Areas for improvement:
 - Add unit tests
 - Optimize performance
 
-## 📞 Support
+## Support
 
 For issues and questions:
 - Check the troubleshooting section above
@@ -419,6 +419,6 @@ For issues and questions:
 
 ---
 
-**Built with ❤️ using Flutter, OpenCV, and ONNX Runtime**
+Built with Flutter, OpenCV, and ONNX Runtime
 
 *A comprehensive computer vision application showcasing face detection, human detection, and face recognition with state-of-the-art deep learning models.*
