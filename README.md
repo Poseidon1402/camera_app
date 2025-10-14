@@ -2,37 +2,39 @@
 
 A comprehensive Flutter application featuring face detection, human detection, and face recognition powered by deep learning models (YuNet, MobileNetSSD, EdgeFace) with OpenCV and ONNX Runtime.
 
-## 🌟 Features
+## Features
 
-### 🎯 Face Detection
-- **YuNet Model**: State-of-the-art face detection with facial landmarks
-- **5-Point Landmarks**: Eyes, nose, and mouth corners detection
-- **Real-time Detection**: Fast and accurate face localization
-- **Confidence Scoring**: Each detection comes with confidence metrics
+### Face Detection
+- State-of-the-art YuNet model with facial landmarks detection
+- 5-point landmarks: eyes, nose, and mouth corners
+- Fast and accurate face localization
+- Confidence scoring for each detection
+- Non-Maximum Suppression (NMS) for overlapping faces
 
-### 👥 Human Detection  
-- **MobileNetSSD Model**: Efficient human body detection
-- **Person Classification**: Identifies and localizes people in images
-- **Multi-person Support**: Detects multiple people in a single image
-- **Optimized Performance**: Lightweight model for mobile devices
+### Human Detection  
+- Efficient MobileNetSSD model for person detection
+- Identifies and localizes people in images
+- Multi-person support in single images
+- Lightweight model optimized for mobile devices
+- Real-time processing capability
 
-### 🔐 Face Recognition
-- **EdgeFace Model**: Advanced face recognition with ONNX Runtime
-- **Face Alignment**: Automatic alignment using detected landmarks for better accuracy
-- **Face Enrollment**: Register faces with custom names
-- **Face Identification**: Recognize registered faces with similarity scores
-- **Persistent Storage**: Face database saved locally using SharedPreferences
-- **Similarity Threshold**: Configurable threshold for recognition (default: 50%)
+### Face Recognition
+- Advanced EdgeFace model with ONNX Runtime
+- Automatic face alignment using detected landmarks
+- Face enrollment with custom names
+- Face identification with similarity scores
+- Persistent local storage using SharedPreferences
+- Configurable similarity threshold (default: 50%)
+- 512-dimensional embedding vectors
 
-### 📱 User Experience
-- 📸 **Camera Support**: Capture photos directly from camera
-- 🖼️ **Gallery Support**: Select images from device gallery
-- 🎨 **Material Design 3**: Beautiful, modern UI with gradient cards
-- 🗂️ **Organized Navigation**: Drawer menu with all features
-- 📊 **Visual Feedback**: Color-coded bounding boxes and labels
-- ♻️ **Easy Reset**: Quick access to try new images
+### User Experience
+- Camera and gallery image selection
+- Material Design 3 with gradient cards
+- Organized navigation drawer
+- Visual feedback with color-coded bounding boxes
+- Easy image reset functionality
 
-## 🏗️ Architecture
+## Architecture
 
 ### Design Patterns
 - **Service Layer Pattern**: Separation of business logic from UI
@@ -68,7 +70,7 @@ lib/
     └── edgeface.onnx                      # EdgeFace recognition model
 ```
 
-## 🚀 Technologies Used
+## Technologies Used
 
 ### Core Frameworks
 - **Flutter** (^3.9.2): Cross-platform mobile framework
@@ -89,7 +91,7 @@ lib/
 - **path_provider** (^2.1.2): File system access
 - **shared_preferences** (^2.2.2): Local data persistence
 
-## 📋 Prerequisites
+## Prerequisites
 
 - **Flutter SDK**: 3.9.2 or higher
 - **Dart SDK**: Included with Flutter
@@ -97,7 +99,7 @@ lib/
 - **Android**: API Level 21+ (Android 5.0+)
 - **iOS**: iOS 11.0+
 
-## 🔧 Installation
+## Installation
 
 ### 1. Clone or Navigate to Project
 ```bash
