@@ -344,7 +344,7 @@ class FaceRecognitionService {
       }
 
       // Threshold for recognition (adjust based on your model)
-      const double recognitionThreshold = 0.4;
+      const double recognitionThreshold = 0.3;
       
       if (bestSimilarity >= recognitionThreshold) {
         debugPrint('Face recognized: $bestMatch with similarity: $bestSimilarity');
