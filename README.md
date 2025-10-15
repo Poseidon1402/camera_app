@@ -2,6 +2,28 @@
 
 A comprehensive Flutter application featuring face detection, human detection, and face recognition powered by deep learning models (YuNet, MobileNetSSD, EdgeFace) with OpenCV and ONNX Runtime.
 
+---
+
+## 📸 Screenshots
+
+<div align="center">
+
+![Home](screenshots/1.png)
+
+![Face Detection](screenshots/5.png)
+
+![Human Detection](screenshots/4.png)
+
+![Enroll Face](screenshots/2.png)
+
+![Recognition Result](screenshots/3.png)
+
+</div>
+
+The app features a modern Material Design 3 interface with gradient cards, intuitive navigation, and real-time visual feedback for all detection and recognition tasks.
+
+---
+
 ## Features
 
 ### Face Detection
@@ -11,7 +33,7 @@ A comprehensive Flutter application featuring face detection, human detection, a
 - Confidence scoring for each detection
 - Non-Maximum Suppression (NMS) for overlapping faces
 
-### Human Detection  
+### Human Detection
 - Efficient MobileNetSSD model for person detection
 - Identifies and localizes people in images
 - Multi-person support in single images
@@ -140,7 +162,7 @@ flutter build apk --release
 ### Home Screen
 The app opens to a dashboard with three feature cards:
 1. **Face Detection**: Detect faces with landmarks
-2. **Human Detection**: Identify people in images  
+2. **Human Detection**: Identify people in images
 3. **Face Recognition**: Enroll and recognize faces
 
 ### Face Detection
@@ -207,7 +229,7 @@ The app opens to a dashboard with three feature cards:
 - **Output**: 512-dimensional embedding vectors
 - **Framework**: ONNX Runtime
 - **Accuracy**: State-of-the-art face recognition
-- **Preprocessing**: 
+- **Preprocessing**:
   - Face alignment using similarity transformation
   - Normalization: `(pixel - 127.5) / 127.5`
 - **Matching**: Cosine similarity between embeddings
@@ -267,8 +289,8 @@ final dstPoints = [
 
 ### Face Recognition Pipeline
 ```
-Image → YuNet Detection → Landmark Extraction → Face Alignment 
-→ Normalization → EdgeFace ONNX Runtime → Embedding Vector 
+Image → YuNet Detection → Landmark Extraction → Face Alignment
+→ Normalization → EdgeFace ONNX Runtime → Embedding Vector
 → Cosine Similarity → Recognition Result
 ```
 
@@ -306,7 +328,7 @@ Image → YuNet Detection → Landmark Extraction → Face Alignment
 
 ### Recognition Issues
 **Problem**: Face recognition not accurate
-- **Solution**: 
+- **Solution**:
   - Enroll faces with good lighting
   - Use frontal face images
   - Avoid extreme angles or occlusions
@@ -350,7 +372,7 @@ Image → YuNet Detection → Landmark Extraction → Face Alignment
 
 ### Processing Times (Release Mode, Mid-Range Device)
 - **Face Detection**: ~50-150ms per image
-- **Human Detection**: ~100-200ms per image  
+- **Human Detection**: ~100-200ms per image
 - **Face Recognition**: ~200-400ms per enrollment/recognition
 - **Face Alignment**: ~20-50ms per face
 
